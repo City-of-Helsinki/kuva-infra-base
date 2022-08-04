@@ -53,3 +53,4 @@ jobs:
           kubeconfig_raw: ${{ secrets.KUBECONFIG_RAW_STAGING}}
           target_namespace: ${{ secrets.K8S_NAMESPACE_STAGING}}
           name: pod-cleaner
+          schedule: "* * * * *" # every min
