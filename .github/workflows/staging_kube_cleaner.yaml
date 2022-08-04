@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'maintain/kube_pod_cleaner/**'
+      - '.github/workflows/staging_kube_cleaner.yaml'
 
 env:
   SRC_FOLDER: ./maintain/kube_pod_cleaner/
