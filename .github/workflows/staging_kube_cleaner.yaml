@@ -45,7 +45,7 @@ jobs:
           push: true
           tags: |
             ${{ env.CONTAINER_REGISTRY_REPO }}:latest
-            ${{ env.CONTAINER_REGISTRY_REPO }}:dev
+            ${{ env.CONTAINER_REGISTRY_REPO }}:${{ github.sha }}
 
   staging:
     runs-on: ubuntu-latest
@@ -62,6 +62,7 @@ jobs:
         uses: City-of-Helsinki/setup-cronjob-action@main
         with:
           image_repository: ${{ env.CONTAINER_REGISTRY_REPO }}
+          image_tag: ${{ github.sha }}
           kubeconfig_raw: ${{ env.KUBECONFIG_RAW }}
           target_namespace: ${{ env.K8S_NAMESPACE }}
           name: pod-cleaner
