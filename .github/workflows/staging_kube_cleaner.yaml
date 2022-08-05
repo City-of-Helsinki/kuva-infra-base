@@ -9,6 +9,13 @@ on:
       - '.github/workflows/staging_kube_cleaner.yaml'
 
 env:
+  CONTAINER_REGISTRY: ghcr.io
+  CONTAINER_REGISTRY_USER: ${{ secrets.GHCR_CONTAINER_REGISTRY_USER }}
+  CONTAINER_REGISTRY_PASSWORD: ${{ secrets.GHCR_TOKEN }}
+  CONTAINER_REGISTRY_REPO: ghcr.io/city-of-helsinki/${{ github.event.repository.name }}/kube_pod_cleaner
+  REPO_NAME: ${{ github.event.repository.name }}
+  KUBECONFIG_RAW: ${{ secrets.KUBECONFIG_RAW_STAGING }}
+  K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE_STAGING}}
   SRC_FOLDER: ./maintain/kube_pod_cleaner/
 
 jobs:
@@ -23,9 +30,9 @@ jobs:
       - name: Login to GitHub Packages
         uses: docker/login-action@v1 
         with:
-          registry: ghcr.io
-          username: ${{ secrets.GHCR_CONTAINER_REGISTRY_USER }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          registry: ${{ env.CONTAINER_REGISTRY }}
+          username: ${{ env.CONTAINER_REGISTRY_USER }}
+          password: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
         
       - uses: docker/build-push-action@v2
         with:
@@ -33,8 +40,8 @@ jobs:
           file: ${{ env.SRC_FOLDER}}Dockerfile
           push: true
           tags: |
-            ghcr.io/city-of-helsinki/${{ github.event.repository.name }}/kube_pod_cleaner:latest
-            ghcr.io/city-of-helsinki/${{ github.event.repository.name }}/kube_pod_cleaner:dev
+            ${{ env.CONTAINER_REGISTRY_REPO }}:latest
+            ${{ env.CONTAINER_REGISTRY_REPO }}:dev
 
   staging:
     runs-on: ubuntu-latest
@@ -50,8 +57,8 @@ jobs:
       - name: Deploy Order Expiration Cronjob
         uses: City-of-Helsinki/setup-cronjob-action@main
         with:
-          image_repository: ghcr.io/city-of-helsinki/${{ github.event.repository.name }}/kube_pod_cleaner
-          kubeconfig_raw: ${{ secrets.KUBECONFIG_RAW_STAGING}}
-          target_namespace: ${{ secrets.K8S_NAMESPACE_STAGING}}
+          image_repository: ${{ env.CONTAINER_REGISTRY_REPO }}
+          kubeconfig_raw: ${{ env.KUBECONFIG_RAW }}
+          target_namespace: ${{ env.K8S_NAMESPACE }}
           name: pod-cleaner
           schedule: "*/5 * * * *" # every 5min
