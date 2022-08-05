@@ -27,6 +27,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Execute permission
+        run: |
+          chmod +x maintain/kube_pod_cleaner/pod_cleaner.sh
+
       - name: Login to GitHub Packages
         uses: docker/login-action@v1 
         with:
