@@ -15,7 +15,8 @@ env:
   CONTAINER_REGISTRY_REPO: ghcr.io/city-of-helsinki/${{ github.event.repository.name }}/kube_pod_cleaner
   REPO_NAME: ${{ github.event.repository.name }}
   KUBECONFIG_RAW: ${{ secrets.KUBECONFIG_RAW_STAGING }}
-  K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE_STAGING}}
+  K8S_NAMESPACE: default
+#  K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE_STAGING}}
   SRC_FOLDER: ./maintain/kube_pod_cleaner/
 
 jobs:
