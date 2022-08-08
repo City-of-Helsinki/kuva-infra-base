@@ -1,0 +1,28 @@
+# cluster role and rolebindings for service account pod-cleaner-cronjob. These are run manually
+# kubectl create -f rolebindings.yaml
+# kubectl apply -f rolebindings.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kuva-infra-pod-maintainer
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch", "delete"]
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kuva-infra-pod-maintainer
+  namespace: kuva-infra-base-qa
+roleRef: 
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kuva-infra-pod-maintainer
+subjects:
+- kind: ServiceAccount
+  name: pod-cleaner-cronjob
+  namespace: kuva-infra-base-qa

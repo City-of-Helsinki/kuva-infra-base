@@ -63,9 +63,12 @@ jobs:
         with:
           image_repository: ${{ env.CONTAINER_REGISTRY_REPO }}
           image_tag: ${{ github.sha }}
+          #  is this needed?
+          # image_pull_secrets: "{name: regcred}"
           kubeconfig_raw: ${{ env.KUBECONFIG_RAW }}
           target_namespace: ${{ env.K8S_NAMESPACE }}
           name: pod-cleaner
           command: "{/bin/bash}"
           args: "{-c, cd / && ./pod_cleaner.sh}"
           schedule: "*/5 * * * *" # every 5min
+#          schedule: "0 3 * * 2" # every Tuesday 3:00
