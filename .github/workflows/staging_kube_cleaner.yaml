@@ -63,7 +63,7 @@ jobs:
         with:
           image_repository: ${{ env.CONTAINER_REGISTRY_REPO }}
           image_tag: ${{ github.sha }}
-          image_pull_secrets: "{name: regcred}"
+          image_pull_secrets_name: regcred
           kubeconfig_raw: ${{ env.KUBECONFIG_RAW }}
           target_namespace: ${{ env.K8S_NAMESPACE }}
           name: pod-cleaner
